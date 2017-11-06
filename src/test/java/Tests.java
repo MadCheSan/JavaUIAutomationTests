@@ -3,8 +3,6 @@ import com.ladybug.util.WebUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -15,11 +13,10 @@ import java.util.concurrent.TimeUnit;
 public class Tests {
     public static WebDriver driver;
 
-    //public HomePage homepage = new HomePage();
     @BeforeSuite
     public void setUp(){
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test
@@ -36,23 +33,24 @@ public class Tests {
     }
 
     @Test
-    public void canGoToRegistration(){
+    public void canGoToRegistrationFromSignInPage(){
         SignInpage signInpage = WebUtil.goToSignInPage(driver);
         RegistrationPage regPage = signInpage.clickRegisterButton(driver);
         //check for RegisterSubmit button is displayed
         Assert.assertTrue(regPage.submitRegisterButtonEnabled(driver));
     }
+    @Test
+    public void registrationPageShouldHaveThreeInputField(){
+        WebUtil.goToRegistrationInPage(driver);
+        Assert.assertEquals(WebUtil.quantityOfElements(driver, By.xpath("//input[@id]")), 3);
+    }
 
     @Test
     public void canRegisterWithCorrectData() throws InterruptedException {
         RegistrationPage registrationPage = WebUtil.goToRegistrationInPage(driver);
-        registrationPage.fillUserNAmeField(driver, "Alex auto");//data need to be changed for next execution
-
+        registrationPage.fillUserNAmeField(driver, "Alex Che ");//data need to be changed for next execution
         registrationPage.fillPassField(driver, "San777");//data need to be changed for next execution
-
         registrationPage.fillPassConfirmField(driver, "San777");//data need to be changed for next execution
-
-
         HomePage homePage = registrationPage.submitRegisterButtonClick(driver);
         Thread.sleep(10000);
         Assert.assertTrue(homePage.logoutButtonIsExist(driver), "Login button should be exist");
@@ -64,7 +62,7 @@ public class Tests {
         //click login button & create new page
         LoginPage loginPage = signInpage.loginButtonClick(driver);
         //find and fill the UserName field
-        loginPage.fillUserName(driver, "Alex auto");
+        loginPage.fillUserName(driver, "Alex Che");
         //then pass field
         loginPage.fillUserPassword(driver,"San777");
         //and going to homePage by click submitLoginButton "Login"
@@ -72,22 +70,25 @@ public class Tests {
         Assert.assertTrue(homePage.logoutButtonIsExist(driver), "Logout button should be exist");
     }
     @Test
-    public void editPrifile(){
+    public void editProfile(){
         //login и от него перейти на хоумпейдж
         LoginPage loginPage = WebUtil.goToLoginPage(driver);
-
-        HomePage homePage = loginPage.fullLoginIn(driver, "Alex auto", "San777");
-
+        HomePage homePage = loginPage.fullLoginIn(driver, "Alex Che", "San777");
         Assert.assertTrue(WebUtil.isEnabled(driver, By.cssSelector("a.btn[data-toggle]")), "Profile button should be Enabled");
-
         EditProfilePage editProfilePage = homePage.editProfileClick(driver);
         //verify Edit Profile button
         Assert.assertTrue(WebUtil.isEnabled(driver, By.cssSelector("a[href^='/users'][href$='/edit']")), "Edit Profile in Drop-dawn");
-        //some thing lIKE wait ~= implicityWait :)
-
     }
 
-    
+    @Test
+    public  void createNewProject(){
+        LoginPage loginPage = WebUtil.goToLoginPage(driver);
+        HomePage homePage = loginPage.fullLoginIn(driver, "Alex Che", "San777");
+        Assert.assertTrue(WebUtil.isElementExist(driver, By.cssSelector(".btn[value^='Create']")));
+        WebUtil.click(driver, By.cssSelector(".btn[value^='Create']"));
+    }
+    //need to write test about not equals("Alex Che", "Alex auto")
+    //programm is verified just to the space in the username
 
     @AfterSuite
     public void cleanUp(){

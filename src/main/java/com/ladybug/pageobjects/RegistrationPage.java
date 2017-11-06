@@ -1,5 +1,6 @@
 package com.ladybug.pageobjects;
 
+import com.ladybug.util.WebUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,37 +12,27 @@ import org.openqa.selenium.support.PageFactory;
 public class RegistrationPage {
 
     public void fillUserNAmeField(WebDriver driver, String usrName) {
-        WebElement userNameTextBox = driver.findElement(By.cssSelector("input[id='user_username']"));
-        userNameTextBox.clear();
-        userNameTextBox.sendKeys(usrName);
+        WebUtil.sendKey(driver, By.cssSelector("input[id$='_username']"), usrName);
     }
 
     public void fillPassField(WebDriver driver, String pass) {
-        WebElement userPasswordTextBox = driver.findElement(By.cssSelector("input[id='user_password']"));
-        userPasswordTextBox.clear();
-        userPasswordTextBox.sendKeys(pass);
+        WebUtil.sendKey(driver, By.cssSelector("input[id$='_password']"), pass);
     }
 
     public void fillPassConfirmField(WebDriver driver, String passConf) {
-        WebElement confirmPasswTextBox = driver.findElement(By.cssSelector("input[id='user_password_confirmation"));
-        confirmPasswTextBox.clear();
-        confirmPasswTextBox.sendKeys(passConf);
+        WebUtil.sendKey(driver, By.cssSelector("input[id$='_confirmation']"), passConf);
     }
 
     public boolean userNameFieldIsEnabled(WebDriver driver) {
-        WebElement userNameTextBox = driver.findElement(By.cssSelector("input[id='user_username']"));
-        return userNameTextBox.isEnabled();
+        return WebUtil.isElementExist(driver,By.cssSelector("input[id$='_username']"));
     }
 
     public boolean submitRegisterButtonEnabled(WebDriver driver){
-
-        WebElement inputRegisterButton = driver.findElement(By.cssSelector("input.btn-success"));
-        return inputRegisterButton.isEnabled();
+        return WebUtil.isElementExist(driver, By.cssSelector("input.btn-success"));
     }
 
     public HomePage submitRegisterButtonClick(WebDriver driver) {
-        WebElement submitRegisterButton = driver.findElement(By.cssSelector("input.btn-success"));
-        submitRegisterButton.click();
+        WebUtil.click(driver, By.cssSelector("input.btn-success"));
         return PageFactory.initElements(driver, HomePage.class);
     }
 }

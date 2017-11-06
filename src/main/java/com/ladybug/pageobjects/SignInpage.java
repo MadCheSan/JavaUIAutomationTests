@@ -1,5 +1,6 @@
 package com.ladybug.pageobjects;
 
+import com.ladybug.util.WebUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,24 +13,20 @@ public class SignInpage {
 
 
     public Boolean RegistrButtonExist(WebDriver driver) {
-        WebElement registrationButton = driver.findElement(By.cssSelector( "a.btn[href='/register'"));
-        return registrationButton.isEnabled();
+        return WebUtil.isElementExist(driver,By.cssSelector( "a.btn[href='/register'"));
     }
 
     public void goToregistration(WebDriver driver) {
-        WebElement registrationButton = driver.findElement(By.cssSelector("a.btn[href='/register'"));
-        registrationButton.click();
+        WebUtil.click(driver, By.cssSelector("a.btn[href='/register'"));
     }
 
     public RegistrationPage clickRegisterButton(WebDriver driver) {
-        WebElement registrationButton = driver.findElement(By.cssSelector("a.btn[href='/register'"));
-        registrationButton.click();
+        WebUtil.click(driver, By.cssSelector("a.btn[href='/register'"));
         return PageFactory.initElements(driver, RegistrationPage.class);
     }
 
     public LoginPage loginButtonClick(WebDriver driver) {
-        WebElement loginButton = driver.findElement(By.cssSelector("a.btn[href='/login'"));
-        loginButton.click();
+        WebUtil.click(driver, By.cssSelector("a.btn[href='/login'"));
         return PageFactory.initElements(driver, LoginPage.class);
     }
 }

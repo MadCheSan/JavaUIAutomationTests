@@ -45,6 +45,13 @@ public class WebUtil {
     public static boolean isEnabled(WebDriver driver, By by) {
         WebElement element = driver.findElement(by);
         return element.isEnabled();
+    }
 
+    public static boolean isElementExist(WebDriver driver,By by){
+        return driver.findElements(by).size() > 0;
+    }
+
+    public static int quantityOfElements(WebDriver driver, By by) {
+        return driver.findElements(by).size();
     }
 }

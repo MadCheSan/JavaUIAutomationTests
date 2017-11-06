@@ -11,7 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 public class HomePage {
 
     public boolean logoutButtonIsExist(WebDriver driver) {
-        return driver.findElement(By.cssSelector("a.btn[href='/logout']")).isEnabled();
+        return WebUtil.isElementExist(driver, By.cssSelector("a.btn[href='/logout']"));
     }
 
     public EditProfilePage editProfileClick(WebDriver driver) {
